@@ -1,0 +1,186 @@
+[gd_scene format=3 uid="uid://dcqa3vdptn2ph"]
+
+[ext_resource type="Script" uid="uid://c64x0hdgnafew" path="res://levels/test_level.gd" id="1_level"]
+[ext_resource type="Script" uid="uid://b7ebffgqud7fy" path="res://multiplayer_code/player_spawner.gd" id="2_spawner"]
+[ext_resource type="PackedScene" path="res://combat/training_target.tscn" id="3_target"]
+[ext_resource type="PackedScene" path="res://combat/ammo_pickup.tscn" id="4_ammo"]
+[ext_resource type="PackedScene" path="res://interactables/WallBuy.tscn" id="5_wall_buy"]
+
+[sub_resource type="Environment" id="Environment_arena"]
+background_mode = 1
+background_color = Color(0.15, 0.19, 0.25, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.8, 0.86, 1, 1)
+ambient_light_energy = 0.7
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.37, 0.4, 0.41, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="Mesh_floor"]
+material = SubResource("Material_floor")
+size = Vector3(34, 1, 34)
+
+[sub_resource type="BoxShape3D" id="Shape_floor"]
+size = Vector3(34, 1, 34)
+
+[sub_resource type="StandardMaterial3D" id="Material_wall"]
+albedo_color = Color(0.23, 0.3, 0.35, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="Mesh_wall"]
+material = SubResource("Material_wall")
+size = Vector3(34, 4, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_wall"]
+size = Vector3(34, 4, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material_cover"]
+albedo_color = Color(0.65, 0.42, 0.2, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="Mesh_cover"]
+material = SubResource("Material_cover")
+size = Vector3(2.5, 1.5, 4)
+
+[sub_resource type="BoxShape3D" id="Shape_cover"]
+size = Vector3(2.5, 1.5, 4)
+
+[node name="TestLevel" type="Node3D" unique_id=2122839778]
+script = ExtResource("1_level")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1911824688]
+environment = SubResource("Environment_arena")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1820396081]
+transform = Transform3D(0.8660254, 0.40957603, -0.28678823, 0, 0.57357645, 0.81915206, 0.5, -0.7094065, 0.49673176, 0, 0, 0)
+light_color = Color(1, 0.9, 0.75, 1)
+light_energy = 1.4
+shadow_enabled = true
+
+[node name="Arena" type="Node3D" parent="." unique_id=1778109002]
+
+[node name="Floor" type="StaticBody3D" parent="Arena" unique_id=1523560750]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Floor" unique_id=1089399966]
+mesh = SubResource("Mesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Floor" unique_id=1842570854]
+shape = SubResource("Shape_floor")
+
+[node name="NorthWall" type="StaticBody3D" parent="Arena" unique_id=19036913]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -16.5)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/NorthWall" unique_id=1312568377]
+mesh = SubResource("Mesh_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/NorthWall" unique_id=139375471]
+shape = SubResource("Shape_wall")
+
+[node name="SouthWall" type="StaticBody3D" parent="Arena" unique_id=606977210]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 16.5)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/SouthWall" unique_id=135722866]
+mesh = SubResource("Mesh_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/SouthWall" unique_id=1905855252]
+shape = SubResource("Shape_wall")
+
+[node name="EastWall" type="StaticBody3D" parent="Arena" unique_id=1435512609]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 16.5, 2, 0)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/EastWall" unique_id=673437067]
+mesh = SubResource("Mesh_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/EastWall" unique_id=1867213659]
+shape = SubResource("Shape_wall")
+
+[node name="WestWall" type="StaticBody3D" parent="Arena" unique_id=1760666982]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -16.5, 2, 0)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/WestWall" unique_id=1521815107]
+mesh = SubResource("Mesh_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/WestWall" unique_id=1210303685]
+shape = SubResource("Shape_wall")
+
+[node name="LeftCover" type="StaticBody3D" parent="Arena" unique_id=1891487515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.75, 0)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/LeftCover" unique_id=1397429755]
+mesh = SubResource("Mesh_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/LeftCover" unique_id=2099990755]
+shape = SubResource("Shape_cover")
+
+[node name="RightCover" type="StaticBody3D" parent="Arena" unique_id=854186067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.75, 0)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/RightCover" unique_id=1400522833]
+mesh = SubResource("Mesh_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/RightCover" unique_id=425719055]
+shape = SubResource("Shape_cover")
+
+[node name="RangeLabel" type="Label3D" parent="Arena" unique_id=604792535]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, -15.9)
+text = "TRAINING ARENA"
+font_size = 96
+
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=936601992]
+
+[node name="South" type="Marker3D" parent="SpawnPoints" unique_id=720900849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 10)
+
+[node name="North" type="Marker3D" parent="SpawnPoints" unique_id=469375338]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.1, -10)
+
+[node name="East" type="Marker3D" parent="SpawnPoints" unique_id=689131796]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10, 0.1, 0)
+
+[node name="West" type="Marker3D" parent="SpawnPoints" unique_id=713513910]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -10, 0.1, 0)
+
+[node name="SouthEast" type="Marker3D" parent="SpawnPoints" unique_id=53199619]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 10, 0.1, 10)
+
+[node name="NorthWest" type="Marker3D" parent="SpawnPoints" unique_id=483424626]
+transform = Transform3D(-0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, -0.70710677, -10, 0.1, -10)
+
+[node name="NorthEast" type="Marker3D" parent="SpawnPoints" unique_id=709501329]
+transform = Transform3D(-0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, -0.70710677, 10, 0.1, -10)
+
+[node name="SouthWest" type="Marker3D" parent="SpawnPoints" unique_id=1320605975]
+transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, -10, 0.1, 10)
+
+[node name="Players" type="Node3D" parent="." unique_id=1730850703]
+
+[node name="OlympiaWallBuy" parent="." instance=ExtResource("5_wall_buy")]
+position = Vector3(0, 0, -15.9)
+
+[node name="RifleWallBuy" parent="." instance=ExtResource("5_wall_buy")]
+position = Vector3(4, 0, -15.9)
+weapon_id = "m16a1"
+weapon_name = "M16A1"
+cost = 1200
+ammo_cost = 300
+
+[node name="TrainingTarget" parent="." unique_id=738545350 instance=ExtResource("3_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -6)
+
+[node name="AmmoPickup" parent="." unique_id=1375377908 instance=ExtResource("4_ammo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=11359934]
+spawn_path = NodePath("../Players")
+spawn_limit = 17
+script = ExtResource("2_spawner")

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Gun_Properties" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://guns/gun_properties.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+fire_rate = 120.0
+current_firing_type = 2
+bullet_damage = 12.0
+pellets_per_shot = 8
+shot_range = 40.0
+headshot_multiplier = 1.5
+switchable_firing_modes = false
+possible_firing_modes = Array[int]([2])
+mag_size = 2
+reserve_ammo = 18
+max_reserve_ammo = 36
+reload_time = 2.4
+hip_spread_degrees = 5.0
+ads_spread_degrees = 3.0
+recoil_strength_x = 0.6
+recoil_strength_y = 4.0
+recoil_recovery_speed = 7.0
+mobility_penalty = 0.95
+hipfire_mobility_penalty = 0.85
+ads_mobility_penalty = 0.7
+ads_firing_mobility_penalty = 0.6
+swap_to_time = 0.35
+swap_from_time = 0.35

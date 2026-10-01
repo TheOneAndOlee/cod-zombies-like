@@ -1,0 +1,200 @@
+[gd_scene format=3 uid="uid://so7agopw8fih"]
+
+[ext_resource type="Script" uid="uid://ds3enqxmaot8f" path="res://player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://c5mjla11hcr3x" path="res://player/player_input.gd" id="2_input"]
+[ext_resource type="Script" uid="uid://wdtx3r7egyrn" path="res://player/camera_controller.gd" id="3_camera"]
+[ext_resource type="Script" uid="uid://br5cygad6s14t" path="res://player/object_interactor.gd" id="4_interact"]
+[ext_resource type="Script" uid="uid://b4v36rvo2ybdj" path="res://guns/gun.gd" id="5_gun"]
+[ext_resource type="Resource" uid="uid://dm2ctle8o55o4" path="res://guns/M16A1/M16A1.tres" id="6_stats"]
+[ext_resource type="Script" uid="uid://cei1u0cg5ygw0" path="res://combat/health_component.gd" id="7_health"]
+[ext_resource type="Script" uid="uid://diabk0u4vesn0" path="res://combat/damage_hitbox.gd" id="8_hitbox"]
+[ext_resource type="Script" uid="uid://bvanvneg53rxw" path="res://player/player_hud.gd" id="9_hud"]
+
+[sub_resource type="CapsuleShape3D" id="Capsule"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="BodyMaterial"]
+albedo_color = Color(0.18, 0.46, 0.66, 1)
+roughness = 0.8
+
+[sub_resource type="CapsuleMesh" id="Body"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="BoxShape3D" id="TorsoHitbox"]
+size = Vector3(0.65, 1.2, 0.5)
+
+[sub_resource type="SphereShape3D" id="HeadHitbox"]
+radius = 0.23
+
+[sub_resource type="StandardMaterial3D" id="WeaponMaterial"]
+albedo_color = Color(0.08, 0.1, 0.12, 1)
+metallic = 0.7
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="Receiver"]
+size = Vector3(0.11, 0.13, 0.45)
+
+[sub_resource type="BoxMesh" id="Barrel"]
+size = Vector3(0.045, 0.05, 0.4)
+
+[sub_resource type="BoxMesh" id="Magazine"]
+size = Vector3(0.065, 0.18, 0.1)
+
+[sub_resource type="SceneReplicationConfig" id="StateConfig"]
+properties/0/path = NodePath(".:replicated_state")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=570501620]
+collision_layer = 2
+collision_mask = 3
+floor_snap_length = 0.3
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1652876812]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="." unique_id=2056106516]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+material_override = SubResource("BodyMaterial")
+mesh = SubResource("Body")
+
+[node name="BodyHitbox" type="Area3D" parent="." unique_id=534044708]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("8_hitbox")
+health_path = NodePath("../Health")
+is_headshot = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyHitbox" unique_id=1746834868]
+shape = SubResource("TorsoHitbox")
+
+[node name="HeadHitbox" type="Area3D" parent="." unique_id=388279892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("8_hitbox")
+health_path = NodePath("../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HeadHitbox" unique_id=1080396544]
+shape = SubResource("HeadHitbox")
+
+[node name="Head" type="Node3D" parent="." unique_id=982876448]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=1208450017]
+script = ExtResource("3_camera")
+
+[node name="ShootRay" type="RayCast3D" parent="Head/Camera3D" unique_id=551221137]
+target_position = Vector3(0, 0, -150)
+collision_mask = 5
+collide_with_areas = true
+
+[node name="ObjectInteractor" type="Node3D" parent="Head/Camera3D" unique_id=1324893594]
+script = ExtResource("4_interact")
+
+[node name="InteractRay" type="RayCast3D" parent="Head/Camera3D/ObjectInteractor" unique_id=1864942653]
+target_position = Vector3(0, 0, -2.5)
+
+[node name="Guns" type="Node3D" parent="Head/Camera3D" unique_id=2036593426]
+
+[node name="Weapon" type="Node3D" parent="Head/Camera3D/Guns" unique_id=1901042891]
+script = ExtResource("5_gun")
+properties = ExtResource("6_stats")
+hitscan_ray_path = NodePath("../../ShootRay")
+
+[node name="ViewModel" type="Node3D" parent="Head/Camera3D/Guns/Weapon" unique_id=1795280769]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, -0.23, -0.43)
+
+[node name="Receiver" type="MeshInstance3D" parent="Head/Camera3D/Guns/Weapon/ViewModel" unique_id=905714092]
+material_override = SubResource("WeaponMaterial")
+cast_shadow = 0
+mesh = SubResource("Receiver")
+
+[node name="Barrel" type="MeshInstance3D" parent="Head/Camera3D/Guns/Weapon/ViewModel" unique_id=1342519521]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, -0.35)
+material_override = SubResource("WeaponMaterial")
+cast_shadow = 0
+mesh = SubResource("Barrel")
+
+[node name="Magazine" type="MeshInstance3D" parent="Head/Camera3D/Guns/Weapon/ViewModel" unique_id=80426325]
+transform = Transform3D(1, 0, 0, 0, 0.9887711, 0.14943814, 0, -0.14943814, 0.9887711, 0, -0.14, -0.07)
+material_override = SubResource("WeaponMaterial")
+cast_shadow = 0
+mesh = SubResource("Magazine")
+
+[node name="Muzzle" type="Marker3D" parent="Head/Camera3D/Guns/Weapon/ViewModel" unique_id=1581406455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, -0.55)
+
+[node name="PlayerInput" type="Node" parent="." unique_id=1269345229]
+script = ExtResource("2_input")
+
+[node name="Health" type="Node" parent="." unique_id=1876804873]
+script = ExtResource("7_health")
+
+[node name="StateSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=704923832]
+replication_interval = 0.033333
+replication_config = SubResource("StateConfig")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=923814633]
+script = ExtResource("9_hud")
+
+[node name="Margin" type="MarginContainer" parent="HUD" unique_id=1248095039]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 460.0
+offset_bottom = 100.0
+mouse_filter = 2
+
+[node name="Stats" type="Label" parent="HUD/Margin" unique_id=1191952257]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 24
+text = "HP 100 / 100"
+
+[node name="Crosshair" type="Label" parent="HUD" unique_id=102499772]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 24
+text = "+"
+horizontal_alignment = 1
+
+[node name="Status" type="Label" parent="HUD" unique_id=466908079]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.65
+anchor_right = 0.5
+anchor_bottom = 0.65
+offset_left = -300.0
+offset_right = 300.0
+offset_bottom = 36.0
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="Controls" type="Label" parent="HUD" unique_id=935371854]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -50.0
+offset_right = 950.0
+offset_bottom = -16.0
+text = "WASD Move  |  Space Jump  |  Shift Sprint  |  LMB Fire  |  RMB Aim  |  R Reload  |  X Fire mode  |  Esc Mouse"

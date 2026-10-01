@@ -1,0 +1,201 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://ui/LobbyMenu.gd" id="1_menu"]
+
+[sub_resource type="StyleBoxFlat" id="Style_panel"]
+bg_color = Color(0.085, 0.105, 0.13, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.26, 0.31, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_left = 12
+corner_radius_bottom_right = 12
+content_margin_left = 30.0
+content_margin_top = 26.0
+content_margin_right = 30.0
+content_margin_bottom = 26.0
+
+[sub_resource type="StyleBoxFlat" id="Style_start"]
+bg_color = Color(0.13, 0.43, 0.4, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_left = 5
+corner_radius_bottom_right = 5
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+
+[sub_resource type="Theme" id="Theme_menu"]
+default_font_size = 16
+Label/colors/font_color = Color(0.88, 0.92, 0.94, 1)
+Button/font_sizes/font_size = 16
+LineEdit/font_sizes/font_size = 16
+ItemList/font_sizes/font_size = 16
+
+[node name="LobbyMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_menu")
+script = ExtResource("1_menu")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.035, 0.048, 0.063, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Center" type="CenterContainer" parent="Margin"]
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="Margin/Center"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_panel")
+
+[node name="Content" type="VBoxContainer" parent="Margin/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="Margin/Center/Panel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.73, 0.67, 1)
+theme_override_font_sizes/font_size = 12
+text = "CO-OP / PVP   •   ENET"
+
+[node name="Title" type="Label" parent="Margin/Center/Panel/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Multiplayer lobby"
+
+[node name="Subtitle" type="Label" parent="Margin/Center/Panel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.66, 0.71, 1)
+text = "Get everyone together, then start the match."
+
+[node name="Fields" type="GridContainer" parent="Margin/Center/Panel/Content"]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="NameLabel" type="Label" parent="Margin/Center/Panel/Content/Fields"]
+layout_mode = 2
+text = "Display name"
+
+[node name="NameEdit" type="LineEdit" parent="Margin/Center/Panel/Content/Fields"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player"
+placeholder_text = "Your name"
+max_length = 24
+
+[node name="AddressLabel" type="Label" parent="Margin/Center/Panel/Content/Fields"]
+layout_mode = 2
+text = "Server address"
+
+[node name="AddressEdit" type="LineEdit" parent="Margin/Center/Panel/Content/Fields"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "127.0.0.1"
+placeholder_text = "Host IP address"
+
+[node name="PortLabel" type="Label" parent="Margin/Center/Panel/Content/Fields"]
+layout_mode = 2
+text = "UDP port"
+
+[node name="PortEdit" type="SpinBox" parent="Margin/Center/Panel/Content/Fields"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+min_value = 1.0
+max_value = 65535.0
+value = 7000.0
+rounded = true
+allow_greater = false
+allow_lesser = false
+
+[node name="ConnectionButtons" type="HBoxContainer" parent="Margin/Center/Panel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HostButton" type="Button" parent="Margin/Center/Panel/Content/ConnectionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Host lobby"
+
+[node name="JoinButton" type="Button" parent="Margin/Center/Panel/Content/ConnectionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Join lobby"
+
+[node name="RosterTitle" type="Label" parent="Margin/Center/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Players (0 / 16)"
+
+[node name="RosterList" type="ItemList" parent="Margin/Center/Panel/Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 126)
+layout_mode = 2
+allow_reselect = true
+
+[node name="StatusLabel" type="Label" parent="Margin/Center/Panel/Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.64, 0.73, 0.78, 1)
+text = "Host a lobby or join one on your local network."
+autowrap_mode = 2
+
+[node name="SessionButtons" type="HBoxContainer" parent="Margin/Center/Panel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DisconnectButton" type="Button" parent="Margin/Center/Panel/Content/SessionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Disconnect"
+disabled = true
+
+[node name="StartButton" type="Button" parent="Margin/Center/Panel/Content/SessionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("Style_start")
+text = "Start match"
+disabled = true

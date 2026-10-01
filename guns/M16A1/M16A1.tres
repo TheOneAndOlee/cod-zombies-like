@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Gun_Properties" format=3 uid="uid://dm2ctle8o55o4"]
+
+[ext_resource type="Script" uid="uid://dwc5tx718lk64" path="res://guns/gun_properties.gd" id="1_c2fi1"]
+
+[resource]
+script = ExtResource("1_c2fi1")
+bullet_damage = 50.0
+reload_time = 1.5
+mobility_penalty = 0.8
+hipfire_mobility_penalty = 0.7
+ads_mobility_penalty = 0.8
+ads_firing_mobility_penalty = 0.7
+metadata/_custom_type_script = "uid://dwc5tx718lk64"

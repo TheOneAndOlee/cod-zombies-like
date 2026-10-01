@@ -1,0 +1,76 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://interactables/WallBuy.gd" id="1_wall"]
+
+[sub_resource type="BoxShape3D" id="ProximityShape"]
+size = Vector3(2.4, 2.2, 2.4)
+
+[sub_resource type="StandardMaterial3D" id="BoardMaterial"]
+albedo_color = Color(0.08, 0.11, 0.13, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="ChalkMaterial"]
+albedo_color = Color(0.9, 0.91, 0.79, 1)
+shading_mode = 0
+
+[sub_resource type="BoxMesh" id="BoardMesh"]
+size = Vector3(1.9, 1.15, 0.1)
+
+[sub_resource type="BoxMesh" id="BarrelMesh"]
+size = Vector3(0.9, 0.045, 0.035)
+
+[sub_resource type="BoxMesh" id="StockMesh"]
+size = Vector3(0.48, 0.14, 0.04)
+
+[sub_resource type="BoxMesh" id="GripMesh"]
+size = Vector3(0.08, 0.23, 0.04)
+
+[node name="WallBuy" type="Area3D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1.1, 1.0)
+shape = SubResource("ProximityShape")
+
+[node name="Panel" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.3, 0)
+mesh = SubResource("BoardMesh")
+material_override = SubResource("BoardMaterial")
+
+[node name="WeaponOutline" type="Node3D" parent="."]
+position = Vector3(0, 1.32, 0.07)
+
+[node name="BarrelTop" type="MeshInstance3D" parent="WeaponOutline"]
+position = Vector3(-0.17, 0.06, 0)
+mesh = SubResource("BarrelMesh")
+material_override = SubResource("ChalkMaterial")
+
+[node name="BarrelBottom" type="MeshInstance3D" parent="WeaponOutline"]
+position = Vector3(-0.17, -0.015, 0)
+mesh = SubResource("BarrelMesh")
+material_override = SubResource("ChalkMaterial")
+
+[node name="Stock" type="MeshInstance3D" parent="WeaponOutline"]
+position = Vector3(0.48, -0.08, 0)
+rotation_degrees = Vector3(0, 0, -10)
+mesh = SubResource("StockMesh")
+material_override = SubResource("ChalkMaterial")
+
+[node name="Grip" type="MeshInstance3D" parent="WeaponOutline"]
+position = Vector3(0.16, -0.11, 0)
+rotation_degrees = Vector3(0, 0, 25)
+mesh = SubResource("GripMesh")
+material_override = SubResource("ChalkMaterial")
+
+[node name="InteractionPoint" type="Marker3D" parent="."]
+position = Vector3(0, 1.15, 0.16)
+
+[node name="Label3D" type="Label3D" parent="."]
+position = Vector3(0, 0.95, 0.08)
+pixel_size = 0.003
+font_size = 34
+outline_size = 4
+text = "Olympia\n500 Points / Ammo 250"
+
